@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Diabetes Prediction System</h1>
+            <p>PIMA Indians Dataset - Machine Learning Web Application</p>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>768</h3>
+                <p>Total Samples</p>
+            </div>
+            <div class="stat-card">
+                <h3>268</h3>
+                <p>Diabetic Cases</p>
+            </div>
+            <div class="stat-card">
+                <h3>500</h3>
+                <p>Non-Diabetic</p>
+            </div>
+            <div class="stat-card">
+                <h3>78.5%</h3>
+                <p>Accuracy</p>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2>Patient Information</h2>
+                <form id="predictionForm">
+                    <div class="form-group">
+                        <label>Pregnancies (0-17)</label>
+                        <input type="number" id="pregnancies" value="3" min="0" max="17" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Glucose Level (0-200 mg/dL)</label>
+                        <input type="number" id="glucose" value="120" min="0" max="200" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Blood Pressure (0-122 mm Hg)</label>
+                        <input type="number" id="bloodPressure" value="70" min="0" max="122" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Skin Thickness (0-99 mm)</label>
+                        <input type="number" id="skinThickness" value="20" min="0" max="99" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Insulin (0-846)</label>
+                        <input type="number" id="insulin" value="80" min="0" max="846" required>
+                    </div>
+                    <div class="form-group">
+                        <label>BMI (0-67)</label>
+                        <input type="number" id="bmi" value="25" min="0" max="67" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Diabetes Pedigree Function (0.0-2.5)</label>
+                        <input type="number" id="dpf" value="0.5" min="0" max="2.5" step="0.001" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Age (21-81 years)</label>
+                        <input type="number" id="age" value="30" min="21" max="81" required>
+                    </div>
+                    <button type="submit" class="btn">Predict Diabetes Risk</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadSampleData()">Load Sample Data</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2>Prediction Result</h2>
+                <div id="resultBox" class="result-box" style="display: none;">
+                    <h3 id="resultTitle"></h3>
+                    <p id="resultProbability"></p>
+                    <div class="probability-bar">
+                        <div id="probabilityFill" class="probability-fill"></div>
+                    </div>
+                    <p id="resultAdvice"></p>
+                </div>
+                <div id="waitingMessage" style="text-align: center; padding: 50px; color: #999;">
+                    <p>Enter patient data and click predict</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            document.getElementById('waitingMessage').style.display = 'none';
+            document.getElementById('resultBox').style.display = 'none';
+            
+            var formData = {
+                pregnancies: document.getElementById('pregnancies').value,
+                glucose: document.getElementById('glucose').value,
+                bloodPressure: document.getElementById('bloodPressure').value,
+                skinThickness: document.getElementById('skinThickness').value,
+                insulin: document.getElementById('insulin').value,
+                bmi: document.getElementById('bmi').value,
+                dpf: document.getElementById('dpf').value,
+                age: document.getElementById('age').value
+            };
+            
+            fetch('/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(formData)
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                document.getElementById('resultBox').style.display = 'block';
+                var resultBox = document.getElementById('resultBox');
+                
+                if (data.prediction === 1) {
+                    resultBox.className = 'result-box diabetic';
+                    document.getElementById('resultTitle').textContent = 'High Risk of Diabetes';
+                    document.getElementById('resultAdvice').textContent = 'Please consult a healthcare professional.';
+                } else {
+                    resultBox.className = 'result-box non-diabetic';
+                    document.getElementById('resultTitle').textContent = 'Low Risk of Diabetes';
+                    document.getElementById('resultAdvice').textContent = 'Keep maintaining a healthy lifestyle.';
+                }
+                
+                document.getElementById('resultProbability').textContent = 
+                    'Diabetes Probability: ' + data.probability_diabetic.toFixed(2) + '%';
+                
+                var fill = document.getElementById('probabilityFill');
+                fill.style.width = data.probability_diabetic + '%';
+                fill.textContent = data.probability_diabetic.toFixed(1) + '%';
+            });
+        });
+        
+        function loadSampleData() {
+            var samples = [
+                {pregnancies: 6, glucose: 148, bp: 72, skin: 35, insulin: 120, bmi: 33.6, dpf: 0.627, age: 50},
+                {pregnancies: 1, glucose: 85, bp: 66, skin: 29, insulin: 85, bmi: 26.6, dpf: 0.351, age: 31},
+                {pregnancies: 8, glucose: 183, bp: 64, skin: 29, insulin: 155, bmi: 23.3, dpf: 0.672, age: 32},
+                {pregnancies: 1, glucose: 89, bp: 66, skin: 23, insulin: 94, bmi: 28.1, dpf: 0.167, age: 21},
+                {pregnancies: 0, glucose: 137, bp: 40, skin: 35, insulin: 168, bmi: 43.1, dpf: 2.288, age: 33},
+                {pregnancies: 5, glucose: 116, bp: 74, skin: 29, insulin: 105, bmi: 25.6, dpf: 0.201, age: 30},
+                {pregnancies: 3, glucose: 78, bp: 50, skin: 32, insulin: 88, bmi: 31.0, dpf: 0.248, age: 26},
+                {pregnancies: 10, glucose: 115, bp: 70, skin: 30, insulin: 96, bmi: 34.6, dpf: 0.529, age: 32},
+                {pregnancies: 2, glucose: 197, bp: 70, skin: 45, insulin: 543, bmi: 30.5, dpf: 0.158, age: 53},
+                {pregnancies: 8, glucose: 125, bp: 96, skin: 29, insulin: 115, bmi: 22.2, dpf: 0.262, age: 21}
+            ];
+            
+            var randomSample = samples[Math.floor(Math.random() * samples.length)];
+            
+            document.getElementById('pregnancies').value = randomSample.pregnancies;
+            document.getElementById('glucose').value = randomSample.glucose;
+            document.getElementById('bloodPressure').value = randomSample.bp;
+            document.getElementById('skinThickness').value = randomSample.skin;
+            document.getElementById('insulin').value = randomSample.insulin;
+            document.getElementById('bmi').value = randomSample.bmi;
+            document.getElementById('dpf').value = randomSample.dpf;
+            document.getElementById('age').value = randomSample.age;
+        }
+    </script>
+</body>
+</html>
