@@ -1,41 +1,69 @@
-# 🩺 Diabetes Prediction Web Application
+# 🩺 Diabetes Prediction using PIMA Indians Dataset
 
 🔗 **Live Demo:** https://diabetes-prediction-kozs.onrender.com/  
 📦 **Repository:** https://github.com/krishnagupta2107/diabetes_prediction
 
 ---
 
-## 📌 Overview
+## 📌 Project Overview
 
-The **Diabetes Prediction Web Application** is a machine learning–based system that predicts whether a person is likely to have diabetes based on key health parameters.  
-It uses a trained classification model integrated with a Flask web application to provide **real-time predictions** through a simple and user-friendly interface.
+This project presents an **end-to-end Diabetes Prediction System** developed using **Machine Learning** and deployed as a **Flask-based web application**.  
+It predicts whether a person is **Diabetic or Non-Diabetic** based on clinical and physiological health parameters.
 
-This project demonstrates the **end-to-end machine learning workflow**, including data preprocessing, model training, evaluation, and deployment.
+The system is built using the **PIMA Indians Diabetes Dataset** and demonstrates the complete ML lifecycle:  
+data preprocessing → exploratory data analysis → model training & evaluation → deployment.
 
 ---
 
 ## 🎯 Problem Statement
 
-Diabetes is a chronic disease that often goes undetected until it leads to severe health complications. Early prediction can help individuals take preventive measures and seek timely medical advice.  
-This project aims to assist in **early risk assessment** using data-driven techniques.
+Diabetes is a chronic disease that often remains undiagnosed until severe complications occur.  
+Traditional diagnostic methods can be time-consuming and inaccessible for early screening.
+
+This project aims to build an **automated, reliable, and easy-to-use system** that:
+- Predicts diabetes risk using basic health indicators
+- Handles missing or noisy medical data
+- Provides real-time predictions via a web interface
+- Supports early screening and awareness
 
 ---
 
-## 🧠 Machine Learning Approach
+## 🎯 Objectives
 
-- **Dataset:** PIMA Indians Diabetes Dataset  
-- **Algorithm Used:** Logistic Regression  
-- **Type:** Binary Classification (Diabetic / Non-Diabetic)
+- Analyze and preprocess the PIMA Indians Diabetes Dataset
+- Handle missing and zero-valued medical attributes
+- Train and evaluate multiple ML classification models
+- Compare models using standard evaluation metrics
+- Deploy the best-performing model using Flask
+- Provide a simple and user-friendly web interface
 
-### Features Used
-- Pregnancies  
-- Glucose Level  
-- Blood Pressure  
-- Skin Thickness  
-- Insulin  
-- BMI  
-- Diabetes Pedigree Function  
-- Age  
+---
+
+## 🧠 Machine Learning Methodology
+
+### Dataset
+- **PIMA Indians Diabetes Dataset**
+- Features include:
+  - Pregnancies
+  - Glucose Level
+  - Blood Pressure
+  - Skin Thickness
+  - Insulin
+  - BMI
+  - Diabetes Pedigree Function
+  - Age
+
+### Data Preprocessing
+- Zero values treated as missing (Insulin, BMI, Skin Thickness, etc.)
+- Feature scaling using **Standard Scaler**
+- Train-test split (80/20)
+
+### Models Trained
+- Logistic Regression
+- Random Forest Classifier
+- Support Vector Machine (SVM)
+
+The best-performing model was selected based on evaluation metrics.
 
 ---
 
@@ -43,32 +71,39 @@ This project aims to assist in **early risk assessment** using data-driven techn
 
 | Metric | Score |
 |------|------|
-| Accuracy | ~78% |
-| Precision | ~75% |
-| Recall | ~72% |
-| F1-Score | ~73% |
+| Accuracy | 70.78% |
+| Precision | 60.00% |
+| Recall | 50.00% |
+| F1-Score | 54.55% |
+
+- Recall was prioritized to reduce missed diabetic cases.
+- Confusion matrix was used for deeper analysis.
 
 ---
 
-## 🌐 Web Application
+## 🌐 Web Application & Deployment
 
-- Built using **Flask**
-- Accepts user health inputs via a web form
-- Returns **instant prediction results**
-- Deployed on **Render**
+- **Backend:** Flask
+- **Frontend:** HTML, CSS
+- **Model Integration:** Pickle/Joblib
+- **Deployment Platform:** Render
 
 🔗 **Live Application:**  
 👉 https://diabetes-prediction-kozs.onrender.com/
+
+⏱️ **Prediction Time:** ~40–100 ms  
+⚡ Smooth real-time performance
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Programming Language:** Python  
-- **Machine Learning:** scikit-learn  
-- **Web Framework:** Flask  
-- **Frontend:** HTML, CSS  
-- **Deployment:** Render  
+- Python
+- NumPy, Pandas
+- scikit-learn
+- Flask
+- HTML, CSS
+- Render (Deployment)
 
 ---
 
@@ -88,20 +123,23 @@ http://127.0.0.1:5000/
 
 ## 🚀 Future Enhancements
 
-- Add advanced ML models (Random Forest, XGBoost)
-- Improve UI and visualization
-- Add user authentication
-- Store prediction history
+- Improve accuracy using advanced models (XGBoost, ANN)
+- Add larger and more diverse datasets
+- Store user prediction history
+- Enhance UI with visual analytics
+- Deploy at scale for real-world screening
 
 ---
 
 ## 👨‍💻 Author
 
 **Krishna Gupta**  
-GitHub: https://github.com/krishnagupta2107  
+B.Tech CSE (AIML)  
+GLA University, Mathura  
+GitHub: https://github.com/krishnagupta2107
 
 ---
 
 ## ⚠️ Disclaimer
 
-This project is for **educational purposes only** and should not be used as a medical diagnosis tool.
+This project is intended for **educational and research purposes only** and should not be used as a substitute for professional medical diagnosis.
